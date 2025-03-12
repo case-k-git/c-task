@@ -1,20 +1,14 @@
 functions:
   user-api:
     filename: "../src/user-api.zip"
-    handler: "index.handler"
-    runtime: "nodejs18.x"
-    memory_size: 1024
-    timeout: 30
-    environment_variables:
-      DB_TABLE: "users-prod"
-      API_VERSION: "v1"
+    handler: "lambda_function.lambda_handler"
+    runtime: "python3.11"
+    memory_size: 128
+    timeout: 3
 
   order-processor:
     filename: "../src/order-processor.zip"
-    handler: "processor.handler"
-    runtime: "nodejs18.x"
-    memory_size: 2048
-    timeout: 60
-    environment_variables:
-      QUEUE_URL: "https://sqs.example.com/prod"
-      BATCH_SIZE: "500"
+    handler: "processor.lambda_handler"
+    runtime: "python3.11"
+    memory_size: 128
+    timeout: 3
