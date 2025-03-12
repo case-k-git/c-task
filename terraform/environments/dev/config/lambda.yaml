@@ -1,8 +1,8 @@
 functions:
   user-api:
     filename: "../src/user-api.zip"
-    handler: "index.handler"
-    runtime: "nodejs18.x"
+    handler: "lambda_function.lambda_handler"
+    runtime: "python3.11"
     memory_size: 256
     timeout: 10
     environment_variables:
@@ -11,8 +11,8 @@ functions:
 
   order-processor:
     filename: "../src/order-processor.zip"
-    handler: "processor.handler"
-    runtime: "nodejs18.x"
+    handler: "processor.lambda_handler"
+    runtime: "python3.11"
     memory_size: 512
     timeout: 30
     environment_variables:
