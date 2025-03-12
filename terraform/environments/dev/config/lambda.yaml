@@ -1,0 +1,20 @@
+functions:
+  user-api:
+    filename: "../src/user-api.zip"
+    handler: "index.handler"
+    runtime: "nodejs18.x"
+    memory_size: 256
+    timeout: 10
+    environment_variables:
+      DB_TABLE: "users-dev"
+      API_VERSION: "v1"
+
+  order-processor:
+    filename: "../src/order-processor.zip"
+    handler: "processor.handler"
+    runtime: "nodejs18.x"
+    memory_size: 512
+    timeout: 30
+    environment_variables:
+      QUEUE_URL: "https://sqs.example.com/dev"
+      BATCH_SIZE: "100"
