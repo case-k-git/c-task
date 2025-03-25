@@ -1,19 +1,47 @@
-MERGE INTO bonuses D
-USING (
-    SELECT employee_id, salary, department_id
-    FROM employees
-    WHERE department_id = 80
-) S
-ON (D.employee_id = S.employee_id)
-WHEN MATCHED AND (S.salary > 8000) THEN
-    DELETE
-WHEN MATCHED THEN
-    UPDATE
-        SET D.bonus = D.bonus + S.salary * 0.02
-WHEN NOT MATCHED AND (S.salary <= 8000) THEN
-    INSERT (D.employee_id, D.bonus)
-    VALUES (S.employee_id, S.salary * 0.01);
+-- DUMMY
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders (
+    order_id INT,
+    otll INT,
+    product_name STRING,
+    quantity INT,
+    order_date DATE
+);
 
+INSERT INTO orders (order_id, otll, product_name, quantity, order_date)
+VALUES
+    (1,  50000,  'Item A', 10, '2023-01-01'),
+    (2, 150000,  'Item B',  5, '2023-02-01'),
+    (3, 250000,  'Item C',  3, '2023-03-01');
+
+DROP TABLE IF EXISTS small_orders;
+CREATE TABLE small_orders (
+    order_id INT,
+    otll INT,
+    product_name STRING,
+    quantity INT,
+    order_date DATE
+);
+
+DROP TABLE IF EXISTS medium_orders;
+CREATE TABLE medium_orders (
+    order_id INT,
+    otll INT,
+    product_name STRING,
+    quantity INT,
+    order_date DATE
+);
+
+DROP TABLE IF EXISTS large_orders;
+CREATE TABLE large_orders (
+    order_id INT,
+    otll INT,
+    product_name STRING,
+    quantity INT,
+    order_date DATE
+);
+
+-- DML
 CREATE TEMPORARY VIEW orders_source AS
 SELECT
     struct(*) AS data,
@@ -39,18 +67,3 @@ SELECT data.*
 FROM orders_source
 WHERE target = 'special_orders';
 
-# block 1
-# PL/SQL cursor for LOOP example
-c_product = spark.sql(f"""
-SELECT
-  product_name,
-  list_price
-FROM products
-ORDER BY
-  list_price DESC
-""")
-
-for r_product in c_product.take(1000):
-    # FIXME databricks.migration.task Review and Update default max records limit (1000)
-    # s_e_t to above df.api call to avoid collecting large number of records to driver
-    print(r_product["product_name"] + " : $" + r_product["list_price"])
