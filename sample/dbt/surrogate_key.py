@@ -1,11 +1,19 @@
 from pyspark.sql import functions as F
 
-df = spark.table("your_table")
+# 対象のテーブル名を指定
+table_name = "your_table"
+
+columns_df = spark.sql(f"""
+    SELECT column_name
+    FROM information_schema.columns
+    WHERE table_name = '{table_name}'
+    ORDER BY ordinal_position
+""")
+candidate_columns = [row["column_name"] for row in columns_df.collect()]
+
+df = spark.table(table_name)
 
 total_count = df.count()
-
-candidate_columns = ["col1", "col2", "col3", "col4"]
-
 selected_columns = []
 for col in candidate_columns:
     selected_columns.append(col)
